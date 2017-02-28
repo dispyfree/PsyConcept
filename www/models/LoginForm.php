@@ -13,11 +13,10 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $mail_address;
     public $password;
-    public $rememberMe = true;
 
-    private $_user = false;
+    private $_team = false;
 
 
     /**
@@ -27,12 +26,17 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
+            [['mail_address', 'password'], 'required'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
+    }
+    
+    public function attributeLabels(){
+        return [
+            'mail_address'  => Yii::t('app', 'Mailaddresse'),
+            'password'      => Yii::t('app', 'Passwort')
+            ];
     }
 
     /**
@@ -46,11 +50,12 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, Yii::t('app', 'Der Benutzername oder das Passwort sind nicht korrekt'));
             }
+            return true;
         }
+        return false;
     }
 
     /**
@@ -60,7 +65,14 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            $user = $this->getUser();
+            
+            if($user->active)
+                //Login valid for 30 days
+                return Yii::$app->user->login($this->getUser(), 3600*24*30 );
+            else{
+                $this->addError('mail_address', Yii::t('app','Der Account wurde noch nicht aktiviert'));
+            }
         }
         return false;
     }
@@ -72,10 +84,10 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+        if ($this->_team === false) {
+            $this->_team = Team::findOne(['mail_address' => $this->mail_address]);
         }
 
-        return $this->_user;
+        return $this->_team;
     }
 }

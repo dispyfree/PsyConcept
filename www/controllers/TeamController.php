@@ -9,10 +9,12 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\filters\AccessControl;
+
 /**
  * TeamController implements the CRUD actions for Team model.
  */
-class TeamController extends Controller
+class TeamController extends BaseController
 {
     /**
      * @inheritdoc
@@ -24,6 +26,25 @@ class TeamController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' =>   adminAccessRule::className()
+                ],
+                //'only' => ['login', 'logout', 'register'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login', 'register'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -54,24 +75,6 @@ class TeamController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
-
-    /**
-     * Creates a new Team model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Team();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**

@@ -9,15 +9,12 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Teams');
 $this->params['breadcrumbs'][] = $this->title;
+
+// Html::a(Yii::t('app', 'Create Team'), ['create'], ['class' => 'btn btn-success']) 
 ?>
 <div class="team-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Team'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -25,7 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            'active',
+            'management',
             'short_name',
+            'mail_address',
             'balance',
 
             ['class' => 'yii\grid\ActionColumn'],

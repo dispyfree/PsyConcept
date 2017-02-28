@@ -10,7 +10,11 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+
+//Register bootstrap grid css 
+$this->registerCssFile('@web/css/bootstrap-grid.css');
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -27,30 +31,52 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => Yii::t('app', 'PsyConcept'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $isGuest = Yii::$app->user->isGuest;
+    $isAdmin = Yii::$app->user->getIdentity()->management;
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            [
+                'label' => Yii::t('app', 'Funktionen'),
+                'items' => [
+                    ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+                    ['label' => Yii::t('app', 'Teams'), 'url' => ['/team/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Runden'), 'url' => ['/round/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Aufgaben'), 'url' => ['/task/index'], 'visible' => $isAdmin],
+                    '<li class="divider"></li>',
+                    ['label' => Yii::t('app', 'Tests'), 'url' => ['/test/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Normen'), 'url' => ['/norm/index'], 'visible' => $isAdmin],
+                    '<li class="divider"></li>',
+                    ['label' => Yii::t('app', 'Testkrit.'), 'url' => ['/criterion_category/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Charakteristiken'), 'url' => ['/characteristic/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Charak. Kat.'), 'url' => ['/criterion_category/index'], 'visible' => $isAdmin],
+                ],
+            ],
+            
+            ['label' => Yii::t('app', 'Registrieren'), 'url' => ['/site/register'], 'visible' => $isGuest],
+            ['label' => Yii::t('app', 'Mein Account'), 'url' => ['/site/account'], 'visible' => !$isGuest],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Logout (' . Yii::$app->user->identity->short_name . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
-                . '</li>'
-            )
+                . '</li>'),
+            //spacing
+            ['label' => ''],
+            ['label' => ''],
+            ['label' => Yii::t('app', 'Über'), 'url' => ['/site/about']],
+            ['label' => Yii::t('app', 'Kontakt'), 'url' => ['/site/contact']],
         ],
     ]);
     NavBar::end();
@@ -60,6 +86,13 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+        
+        <?php
+            foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+                echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
+            }
+        ?>
+        
         <?= $content ?>
     </div>
 </div>

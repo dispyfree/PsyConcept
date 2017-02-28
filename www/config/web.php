@@ -9,13 +9,13 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'nYBAV9N2aodAdqoyEwGpe50LN50MLOM6',
+            'cookieValidationKey' => 'OH9NCtThYq3CdTmqnidXqcAWMLOM6',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Team',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -65,5 +65,6 @@ if (YII_ENV_DEV) {
         'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
+
 
 return $config;
