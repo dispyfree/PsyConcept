@@ -8,6 +8,8 @@ use app\models\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider; 
+use \app\models\TaskCharacteristic;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -51,8 +53,26 @@ class TaskController extends Controller
      */
     public function actionView($id)
     {
+        $task =  $this->findModel($id);
+        
+        $provider = new ActiveDataProvider([
+            'query' => TaskCharacteristic::find()->andFilterWhere(['task_id' => $id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        
+        $taskChar = new TaskCharacteristic();
+        
+        if ($taskChar->load(Yii::$app->request->post()) && $taskChar->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Merkmal wurde hinzugefügt'));
+        }
+         
+        $taskChar->task_id = $task->id;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $task,
+            'dataProvider' => $provider,
+            'taskCharModel' => $taskChar
         ]);
     }
 

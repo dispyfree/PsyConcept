@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\CriterionCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Criterion Categories');
+$this->title = Yii::t('app', 'Kategorien von Charakteristika');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="criterion-category-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Criterion Category'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Charakteristika-Kategorie erstellen'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

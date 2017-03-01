@@ -46,6 +46,9 @@ class Test extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['short_name'], 'string', 'max' => 50],
             [['full_name'], 'string', 'max' => 200],
+            'license_cost_positive' => ['license_costs', 'compare', 'compareValue' => 0, 'operator' => '>=', 'type' => 'number'],
+            'upper_greater_lower_age_bound' => ['applicability_bottom_age_bound', 'compare', 
+                'compareAttribute' => 'applicability_upper_age_bound', 'operator' => '<=', 'type' => 'number']
         ];
     }
 
@@ -56,14 +59,14 @@ class Test extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'short_name' => Yii::t('app', 'Short Name'),
-            'full_name' => Yii::t('app', 'Full Name'),
-            'license_costs' => Yii::t('app', 'License Costs'),
-            'duration' => Yii::t('app', 'Duration'),
-            'required_personnel' => Yii::t('app', 'Required Personnel'),
-            'applicability_bottom_age_bound' => Yii::t('app', 'Applicability Bottom Age Bound'),
-            'applicability_upper_age_bound' => Yii::t('app', 'Applicability Upper Age Bound'),
-            'description' => Yii::t('app', 'Description'),
+            'short_name' => Yii::t('app', 'Kürzel'),
+            'full_name' => Yii::t('app', 'Vollständiger Name'),
+            'license_costs' => Yii::t('app', 'Lizenzkosten'),
+            'duration' => Yii::t('app', 'Dauer'),
+            'required_personnel' => Yii::t('app', 'benötigtes Personal'),
+            'applicability_bottom_age_bound' => Yii::t('app', 'untere Altersgrenze'),
+            'applicability_upper_age_bound' => Yii::t('app', 'obere Altersgrenze'),
+            'description' => Yii::t('app', 'Beschreibung'),
         ];
     }
 

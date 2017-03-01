@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RoundSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Rounds');
+$this->title = Yii::t('app', 'Runden');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="round-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Round'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Neue Runde erstellen'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,7 +25,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'counter',
+            [
+                'attribute' => 'counter',
+                'format'    => 'decimal',
+                'label'     => Yii::t('app', 'Rundennummer')
+            ],
+            [
+                'attribute' => 'active',
+                'format'    => 'boolean',
+                'label'     => Yii::t('app', 'aktiv')
+            ],
+            [
+                'attribute' => 'scheduled_activation',
+                'format'    => 'date',
+                'label'     => Yii::t('app', 'voraussichtlicher Start')
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

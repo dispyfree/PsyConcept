@@ -38,7 +38,7 @@ $this->registerCssFile('@web/css/bootstrap-grid.css');
         ],
     ]);
     $isGuest = Yii::$app->user->isGuest;
-    $isAdmin = Yii::$app->user->getIdentity()->management;
+    $isAdmin = !$isGuest && Yii::$app->user->getIdentity()->management;
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
@@ -53,9 +53,8 @@ $this->registerCssFile('@web/css/bootstrap-grid.css');
                     ['label' => Yii::t('app', 'Tests'), 'url' => ['/test/index'], 'visible' => $isAdmin],
                     ['label' => Yii::t('app', 'Normen'), 'url' => ['/norm/index'], 'visible' => $isAdmin],
                     '<li class="divider"></li>',
-                    ['label' => Yii::t('app', 'Testkrit.'), 'url' => ['/criterion_category/index'], 'visible' => $isAdmin],
                     ['label' => Yii::t('app', 'Charakteristiken'), 'url' => ['/characteristic/index'], 'visible' => $isAdmin],
-                    ['label' => Yii::t('app', 'Charak. Kat.'), 'url' => ['/criterion_category/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Charak. Kat.'), 'url' => ['/criterion-category/index'], 'visible' => $isAdmin],
                 ],
             ],
             

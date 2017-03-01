@@ -8,6 +8,10 @@ use app\models\TestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider; 
+
+use app\models\TestCharacteristic;
+use app\models\Norm;
 
 /**
  * TestController implements the CRUD actions for Test model.
@@ -83,12 +87,39 @@ class TestController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        //Handle changes of characteristics
+        $charProvider = new ActiveDataProvider([
+            'query' => TestCharacteristic::find()->andFilterWhere(['test_id' => $id]),
+        ]);
+        
+        $testChar = new TestCharacteristic();
+        
+        if ($testChar->load(Yii::$app->request->post()) && $testChar->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Merkmal wurde hinzugefügt'));
+        }
+         
+        $testChar->test_id = $model->id;
+        
+        
+        //manage norm changes
+        $normProvider = new ActiveDataProvider([
+            'query' => Norm::find()->andFilterWhere(['test_id' => $model->id])
+        ]);
+        $norm = new \app\models\Norm();
+        
+        if ($norm->load(Yii::$app->request->post()) && $norm->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Normierung wurde hinzugefügt'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'normDataProvider' => $normProvider,
+                'charDataProvider' => $charProvider,
+                'testCharModel' => $testChar
             ]);
         }
     }

@@ -6,25 +6,48 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Test */
 /* @var $form yii\widgets\ActiveForm */
+
+$requiredPersonnel = [];
+for($i = 1; $i < 10; $i++)
+    $requiredPersonnel[$i] = $i;
+
 ?>
 
 <div class="test-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'license_costs')->textInput() ?>
+    <div class="row">
+        <div class="col-2">
+            <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
+        </div>
+        
+        <div class="col-2">
+            <?= $form->field($model, 'license_costs')->textInput() ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'duration')->textInput() ?>
+    <div class="row">
+        <div class="col-2">
+            <?= $form->field($model, 'duration')->textInput() ?>
+        </div>
+        
+        <div class="col-3">
+            <?= $form->field($model, 'required_personnel')->dropdownList($requiredPersonnel) ?>
+        </div>
+        
+        <div class="col-3">
+            <?= $form->field($model, 'applicability_bottom_age_bound')->textInput() ?>
+        </div>
+        
+        <div class="col-3">
+            <?= $form->field($model, 'applicability_upper_age_bound')->textInput() ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'required_personnel')->textInput() ?>
-
-    <?= $form->field($model, 'applicability_bottom_age_bound')->textInput() ?>
-
-    <?= $form->field($model, 'applicability_upper_age_bound')->textInput() ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 

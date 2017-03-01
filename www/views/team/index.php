@@ -22,11 +22,31 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'active',
-            'management',
-            'short_name',
-            'mail_address',
-            'balance',
+            [
+                'attribute' => 'active',
+                'format'    => 'boolean',
+                'label'     => Yii::t('app', 'aktiv')
+            ],
+            [
+                'attribute' => 'management',
+                'format'    => 'boolean',
+                'label'     => Yii::t('app', 'Admin-Account')
+            ],
+            [
+                'attribute' => 'short_name',
+                'format'    => 'text',
+                'label'     => Yii::t('app', 'Teamkürzel')
+            ],
+            [
+                'attribute' => 'mail_address',
+                'format'    => 'text',
+                'label'     => Yii::t('app', 'E-Mail-Adresse')
+            ],
+            [
+                'attribute' => 'balance',
+                'format'    => 'decimal',
+                'label'     => Yii::t('app', 'Kontostand')
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

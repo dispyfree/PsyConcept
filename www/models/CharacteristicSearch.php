@@ -41,7 +41,7 @@ class CharacteristicSearch extends Characteristic
      */
     public function search($params)
     {
-        $query = Characteristic::find();
+        $query = Characteristic::find()->with('criterionCategory');
 
         // add conditions that should always apply here
 

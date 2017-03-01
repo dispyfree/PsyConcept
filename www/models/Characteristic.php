@@ -44,4 +44,15 @@ class Characteristic extends \yii\db\ActiveRecord
             'criterion_category_id' => Yii::t('app', 'Criterion Category ID'),
         ];
     }
+    
+    public function getCriterionCategory(){
+        return $this->hasOne(CriterionCategory::className(), ['id' => 'criterion_category_id']);
+    }
+    
+    /**
+     * @todo: move somewhere else 
+     */
+    public function getCriterionCategoryDropDown() {
+        return CriterionCategory::find()->orderBy('id')->asArray()->all();
+    }
 }

@@ -26,7 +26,7 @@ class Round extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['counter'], 'required'],
+            [['counter', 'active', 'scheduled_activation'], 'required'],
             [['counter'], 'integer'],
         ];
     }
@@ -38,7 +38,9 @@ class Round extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'counter' => Yii::t('app', 'Counter'),
+            'counter' => Yii::t('app', 'Runde'),
+            'active' => Yii::t('app', 'Runde aktiv'),
+            'scheduled_activation' => Yii::t('app', 'Voraussichtlicher Start'),
         ];
     }
 }

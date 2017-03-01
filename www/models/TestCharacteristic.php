@@ -67,4 +67,8 @@ class TestCharacteristic extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Characteristic::className(), ['id' => 'characteristic_id']);
     }
+    
+    public function getCharacteristicsDropDown() {
+        return Characteristic::find()->asArray()->all();
+    }
 }

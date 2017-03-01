@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "task".
@@ -40,8 +41,28 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'description' => Yii::t('app', 'Description'),
-            'round_id' => Yii::t('app', 'Round ID'),
+            'description' => Yii::t('app', 'Beschreibung'),
+            'round_id' => Yii::t('app', 'Runde'),
         ];
     }
+    
+    public function getCharacteristics()
+    {
+        return $this->hasMany(TaskCharacteristic::className(), ['task_id' => 'id']);
+    }
+    
+    public function getRound()
+    {
+        return $this->hasOne(Round::className(), ['id' => 'round_id']);
+    }
+    
+    /**
+     * @todo: move somewhere else 
+     */
+    public function getRoundDropDown() {
+        return Round::find()->orderBy('counter')->asArray()->all();
+    }
+    
+    
+
 }

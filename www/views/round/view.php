@@ -28,8 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            
             'id',
             'counter',
+            [
+                'attribute' => 'active',
+                'format'    => 'boolean',
+                'label'     => Yii::t('app', 'aktiv')
+            ],
+            [
+                'attribute' => 'scheduled_activation',
+                'format'    => 'date',
+                'label'     => Yii::t('app', 'voraussichtlicher Start')
+            ],
         ],
     ]) ?>
 

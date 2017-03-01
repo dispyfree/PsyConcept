@@ -101,9 +101,15 @@ class TestCharacteristicController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $test = $model->test;
+        
+        if($model->delete())
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Merkmal wurde entfernt'));
+        else
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Merkmal konnte nicht entfernt werden'));
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/test/update', 'id' => $test->id]);
     }
 
     /**

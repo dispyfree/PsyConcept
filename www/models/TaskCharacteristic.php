@@ -48,7 +48,7 @@ class TaskCharacteristic extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'task_id' => Yii::t('app', 'Task ID'),
             'characteristic_id' => Yii::t('app', 'Characteristic ID'),
-            'value' => Yii::t('app', 'Value'),
+            'value' => Yii::t('app', 'Wert'),
         ];
     }
 
@@ -66,5 +66,9 @@ class TaskCharacteristic extends \yii\db\ActiveRecord
     public function getCharacteristic()
     {
         return $this->hasOne(Characteristic::className(), ['id' => 'characteristic_id']);
+    }
+    
+    public function getCharacteristicsDropDown() {
+        return Characteristic::find()->asArray()->all();
     }
 }
