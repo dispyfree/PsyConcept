@@ -64,7 +64,6 @@ class RegistrationForm extends Model
     }
     
     public function register(){
-        
         if($this->validate()){
             $team = new Team();
             $team->short_name   = $this->short_name;
@@ -72,19 +71,15 @@ class RegistrationForm extends Model
             $team->pw_hash      = Yii::$app->getSecurity()->generatePasswordHash($this->password_1);
             
             if(!$team->save()){
+                var_dump($team->getErrors()); die();
                 return false;
             }
             else{
-                //Log in at once
-                if(!Yii::$app->user->login($team)){
-                    throw new RuntimeException(Yii::t('app', 'Team konnte nicht eingeloggt werden'));
-                }
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Willkommen bei PsyConcept!'));
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Willkommen bei PsyConcept! Sie können Sich einloggen, sobald Ihr Account freigeschaltet ist'));
                 
                 return true;
             }
         }
-        
         return false;
     }
 

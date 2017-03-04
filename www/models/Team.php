@@ -29,7 +29,7 @@ class Team extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['short_name', 'balance'], 'required'],
+            [['short_name'], 'required'],
             [['balance'], 'number'],
             [['short_name'], 'string', 'max' => 50],
         ];
@@ -62,9 +62,9 @@ class Team extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
                 //@todo: set balance dynamically   
-                $team->balance      = 0;
-                $team->active       = false;
-                $team->management   = false;
+                $this->balance      = 0;
+                $this->active       = false;
+                $this->management   = false;
                 $this->auth_key = \Yii::$app->security->generateRandomString();
             }
             return true;

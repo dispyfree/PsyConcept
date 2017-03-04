@@ -12,6 +12,8 @@ use yii\data\ActiveDataProvider;
 
 use app\models\TestCharacteristic;
 use app\models\Norm;
+use app\models\Image;
+use app\models\ImageUpload;
 
 /**
  * TestController implements the CRUD actions for Test model.
@@ -101,6 +103,13 @@ class TestController extends Controller
          
         $testChar->test_id = $model->id;
         
+        //Handle changes of characteristics
+        $imageProvider = new ActiveDataProvider([
+            'query' => Image::find()->andFilterWhere(['test_id' => $id]),
+        ]);
+        $imageModel = new ImageUpload();
+        $imageModel->test_id = $model->id;
+        
         
         //manage norm changes
         $normProvider = new ActiveDataProvider([
@@ -119,7 +128,9 @@ class TestController extends Controller
                 'model' => $model,
                 'normDataProvider' => $normProvider,
                 'charDataProvider' => $charProvider,
-                'testCharModel' => $testChar
+                'testCharModel' => $testChar,
+                'imageDataProvider' => $imageProvider,
+                'imageModel' => $imageModel
             ]);
         }
     }

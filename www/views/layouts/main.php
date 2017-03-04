@@ -45,13 +45,13 @@ $this->registerCssFile('@web/css/bootstrap-grid.css');
             [
                 'label' => Yii::t('app', 'Funktionen'),
                 'items' => [
-                    ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
                     ['label' => Yii::t('app', 'Teams'), 'url' => ['/team/index'], 'visible' => $isAdmin],
                     ['label' => Yii::t('app', 'Runden'), 'url' => ['/round/index'], 'visible' => $isAdmin],
                     ['label' => Yii::t('app', 'Aufgaben'), 'url' => ['/task/index'], 'visible' => $isAdmin],
                     '<li class="divider"></li>',
-                    ['label' => Yii::t('app', 'Tests'), 'url' => ['/test/index'], 'visible' => $isAdmin],
-                    ['label' => Yii::t('app', 'Normen'), 'url' => ['/norm/index'], 'visible' => $isAdmin],
+                    ['label' => Yii::t('app', 'Aufgaben'), 'url' => ['/task/index', 'visible' => !$isAdmin]],
+                    ['label' => Yii::t('app', 'Meine Tests'), 'url' => ['/test/mine'], 'visible' => !$isAdmin],
+                    ['label' => Yii::t('app', 'Tests'), 'url' => ['/test/index']],
                     '<li class="divider"></li>',
                     ['label' => Yii::t('app', 'Charakteristiken'), 'url' => ['/characteristic/index'], 'visible' => $isAdmin],
                     ['label' => Yii::t('app', 'Charak. Kat.'), 'url' => ['/criterion-category/index'], 'visible' => $isAdmin],

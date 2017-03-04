@@ -19,6 +19,8 @@ class RoundSearch extends Round
     {
         return [
             [['id', 'counter'], 'integer'],
+            [['active'], 'boolean'],
+            [['scheduled_activation'], 'string']
         ];
     }
 

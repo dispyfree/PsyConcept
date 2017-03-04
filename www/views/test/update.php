@@ -1,5 +1,8 @@
 <?php
 
+use app\assets\FancyBoxAsset;
+FancyBoxAsset::register($this); 
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
@@ -77,6 +80,10 @@ $normModel->test_id = $model->id;
     <div class="col-4">
         <div class="test-update card card-box" style='padding:20px;'> 
             <?= $this->render('@app/views/norm/_form', ['model' => $normModel, 'normDataProvider' => $normDataProvider]); ?>
+        </div>
+        
+        <div class="test-update card card-box" style='margin-top:20px; padding:20px;'> 
+            <?= $this->render('_images', ['model' => $model, 'imageModel'=> $imageModel, 'imageDataProvider' => $imageDataProvider]); ?>
         </div>
      </div>
 

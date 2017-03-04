@@ -86,14 +86,13 @@ class SiteController extends Controller
     }
     
     public function actionRegister(){
-        
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        
+
         $model = new RegistrationForm();
         if ($model->load(Yii::$app->request->post()) && $model->register()) {
-            return $this->goBack();
+            return $this->goHome();
         }
         
         return $this->render('register', [

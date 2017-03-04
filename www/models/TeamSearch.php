@@ -21,6 +21,8 @@ class TeamSearch extends Team
             [['id'], 'integer'],
             [['short_name'], 'safe'],
             [['balance'], 'number'],
+            [['active', 'management'], 'boolean'],
+            [['mail_address'], 'email']
         ];
     }
 

@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\models\ImageUpload;
+use yii\web\UploadedFile;
+
 /**
  * ImageController implements the CRUD actions for Image model.
  */
@@ -30,48 +33,53 @@ class ImageController extends Controller
     }
 
     /**
-     * Lists all Image models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new ImageSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
      * Displays a single Image model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Image model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Image();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        $model = $this->findModel($id);
+        $path = Yii::getAlias('@app/data/uploads/') . $model->file_name;
+        if (file_exists($path))
+        {
+            //@todo: fix mime type
+            Yii::$app->response->sendFile($path, null, ['mimeType' => 'image/jpeg', 'inline' => true]);
+            Yii::$app->response->send();
         }
+        else{
+            throw new NotFoundHttpException(Yii::t('app', 'Die angefragte Ressource existiert nicht'));
+        }
+    }
+    
+    public function actionUpload()
+    {
+       $model = new ImageUpload();
+
+        if (Yii::$app->request->isPost) {
+            //Will not return true because imageFile is obviously not populated. Does load anyway. 
+            $model->load(Yii::$app->request->post());
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->upload()) {
+                $img = new Image();
+                $img->test_id = $model->test_id;
+                $img->description = $model->description;
+                $img->file_name = $model->getFullFileName();
+                if($img->save()){
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Bild wurde hinzugefügt'));
+                }
+                else{
+                    die(var_dump($img->getErrors()));
+                    Yii::$app->session->setFlash('error', Yii::t('app', 'Bild konnte nicht abgespeichert werden'));
+                }
+            }
+            else{
+                Yii::$app->session->setFlash('error', Yii::t('app', 'Bild konnte nicht hochgeladen werden'));
+            }
+        }
+
+        return $this->redirect(['/test/update', 'id' => $model->test_id]);
     }
 
     /**
@@ -85,7 +93,7 @@ class ImageController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/test/update', 'id' => $model->test_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,9 +109,11 @@ class ImageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $test_id = $model->test_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/test/update', 'id' => $test_id]);
     }
 
     /**

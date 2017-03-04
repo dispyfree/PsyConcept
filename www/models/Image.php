@@ -30,8 +30,9 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['test_id', 'file_name', 'description'], 'required'],
-            [['test_id', 'file_name', 'description'], 'integer'],
+            [['test_id', 'file_name',], 'required'],
+            [['test_id'], 'integer'],
+            [['description'], 'string'],
             [['test_id'], 'exist', 'skipOnError' => true, 'targetClass' => Test::className(), 'targetAttribute' => ['test_id' => 'id']],
         ];
     }
@@ -44,8 +45,8 @@ class Image extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'test_id' => Yii::t('app', 'Test ID'),
-            'file_name' => Yii::t('app', 'File Name'),
-            'description' => Yii::t('app', 'Description'),
+            'file_name' => Yii::t('app', 'Dateiname'),
+            'description' => Yii::t('app', 'Beschreibung'),
         ];
     }
 
